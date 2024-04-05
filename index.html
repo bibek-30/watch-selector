@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+      }
+
+      .project-page-main {
+        margin-left: 70px;
+      }
+
+      .carousel-container {
+        width: 100%;
+        height: 100vh;
+        margin: 0 auto;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        background-color: #333;
+        overflow: hidden;
+      }
+
+      .current-image {
+        width: auto;
+        height: 100%;
+      }
+
+      .next-list {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100px;
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        transition: all 0.5s;
+      }
+
+      .next-list li {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+        width: 100px;
+        min-width: 100px;
+        height: 51px;
+        margin: 0 5px;
+        text-align: center;
+        line-height: 50px;
+        cursor: pointer;
+        transition: all 0.5s;
+      }
+      .next-list li:first-of-type {
+        padding-left: 15px;
+      }
+      .next-list li:last-of-type {
+        padding-right: 15px;
+      }
+
+      .image-of-list {
+        width: 100%;
+        height: 100%;
+        opacity: 0.5;
+        box-shadow: 0 0 20px #000;
+        transition: all 0.5s;
+      }
+
+      .current-image-list {
+        opacity: 1;
+        transition: all 0.5s;
+      }
+
+      .arrow {
+        display: flex;
+        position: absolute;
+        width: 50px;
+        height: 100px;
+        bottom: 10px;
+        flex: 1;
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+      }
+
+      .arrow-left {
+        left: 10px;
+      }
+      .arrow-right {
+        right: 10px;
+      }
+
+      /*
+ * Animations
+ */
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideInFromLeft {
+        0% {
+          opacity: 0;
+          transform: translateX(-100%);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0px);
+        }
+      }
+
+      @keyframes slideInFromRight {
+        0% {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0px);
+        }
+      }
+
+      .slideInFromLeft {
+        animation: slideInFromLeft 0.5s ease-in-out;
+      }
+
+      .slideInFromRight {
+        animation: slideInFromRight 0.5s ease-in-out;
+      }
+
+      .fadeIn {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="carousel-container">
+      <img
+        src="http://www.planwallpaper.com/static/images/desktop-year-of-the-tiger-images-wallpaper.jpg"
+        alt=""
+        class="current-image"
+      />
+      <span class="arrow arrow-left"> Prev </span>
+      <ul class="next-list">
+        <li>
+          <img
+            src="https://picsum.photos/500/500/?random"
+            alt=""
+            class="image-of-list current-image-list"
+          />
+        </li>
+        <li>
+          <img
+            src="https://picsum.photos/500/500/?random"
+            alt=""
+            class="image-of-list"
+          />
+        </li>
+        <li>
+          <img
+            src="https://picsum.photos/500/500/?random"
+            alt=""
+            class="image-of-list"
+          />
+        </li>
+        <li>
+          <img
+            src="https://picsum.photos/500/500/?random"
+            alt=""
+            class="image-of-list"
+          />
+        </li>
+        <li>
+          <img
+            src="https://picsum.photos/500/500/?random"
+            alt=""
+            class="image-of-list"
+          />
+        </li>
+        <li>
+          <img
+            src="https://picsum.photos/500/500/?random"
+            alt=""
+            class="image-of-list"
+          />
+        </li>
+        <li>
+          <img
+            src="https://picsum.photos/500/500/?random"
+            alt=""
+            class="image-of-list"
+          />
+        </li>
+      </ul>
+      <span class="arrow arrow-right"> Next </span>
+    </section>
+
+    <script>
+      /***********
+	Carousel
+************/
+
+      const carouselContainer = document.querySelector(".carousel-container");
+      const listImageArea = carouselContainer.querySelector(".next-list");
+      const listOfImages = listImageArea.querySelectorAll("img");
+      const currentImage = carouselContainer.querySelector(".current-image");
+      const arrowLeft = carouselContainer.querySelector(".arrow-left");
+      const arrowRight = carouselContainer.querySelector(".arrow-right");
+
+      function styleList() {
+        if (listImageArea.scrollWidth == listImageArea.offsetWidth) {
+          listImageArea.style.justifyContent = "center";
+        } else {
+          listImageArea.style.justifyContent = "flex-start";
+        }
+      }
+
+      function goToRight() {
+        var current = listImageArea.querySelector(".current-image-list");
+        current.parentElement.nextElementSibling.children[0].classList.add(
+          "current-image-list"
+        );
+        current.classList.remove("current-image-list");
+        current = listImageArea.querySelector(".current-image-list");
+        listImageArea.scrollLeft = current.offsetLeft;
+        currentImage.attributes.src.value = current.attributes.src.value;
+        currentImage.classList.add("slideInFromRight");
+        setTimeout(function () {
+          currentImage.classList.remove("slideInFromRight");
+        }, 500);
+      }
+
+      function goToLeft() {
+        var current = listImageArea.querySelector(".current-image-list");
+        current.parentElement.previousElementSibling.children[0].classList.add(
+          "current-image-list"
+        );
+        current.classList.remove("current-image-list");
+        current = listImageArea.querySelector(".current-image-list");
+        listImageArea.scrollLeft = current.offsetLeft;
+        currentImage.attributes.src.value = current.attributes.src.value;
+        currentImage.classList.add("slideInFromLeft");
+        setTimeout(function () {
+          currentImage.classList.remove("slideInFromLeft");
+        }, 500);
+      }
+
+      function changeCurrentImage(newImage) {
+        currentImage.classList.add("fadeIn");
+        setTimeout(function () {
+          currentImage.classList.remove("fadeIn");
+        }, 500);
+        currentImage.attributes.src.value = this.attributes.src.value;
+        //listOfImages.forEach(image => image.classList.remove('current-image-list'));
+        listOfImages.forEach(function (image) {
+          image.classList.remove("current-image-list");
+        });
+        this.classList.add("current-image-list");
+      }
+
+      styleList();
+
+      arrowLeft.addEventListener("click", goToLeft);
+      arrowRight.addEventListener("click", goToRight);
+
+      window.addEventListener("resize", function (e) {
+        styleList();
+      });
+
+      (function () {
+        if (typeof NodeList.prototype.forEach === "function") return false;
+        NodeList.prototype.forEach = Array.prototype.forEach;
+      })();
+
+      //listOfImages.forEach(image => image.addEventListener('click', changeCurrentImage));
+      listOfImages.forEach(function (image) {
+        image.addEventListener("click", changeCurrentImage);
+      });
+    </script>
+  </body>
+</html>

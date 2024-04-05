@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Modals</title>
+    <style>
+      /* Styles for modals */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+      }
+      .modal-content {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        max-width: 400px;
+        text-align: center;
+        border-radius: 5px;
+      }
+      .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Modal 2 -->
+    <button class="trigger2">Open Modal 2</button>
+    <div class="modal modal2">
+      <div class="modal-content">
+        <span class="close-button close-button2">&times;</span>
+        <h2>Modal 2</h2>
+        <p>This is the content of Modal 2.</p>
+      </div>
+    </div>
+
+    <!-- Modal 3 -->
+    <button class="trigger3">Open Modal 3</button>
+    <div class="modal modal3">
+      <div class="modal-content">
+        <span class="close-button close-button3">&times;</span>
+        <h2>Modal 3</h2>
+        <p>This is the content of Modal 3.</p>
+      </div>
+    </div>
+
+    <!-- Modal 4 -->
+    <button class="trigger4">Open Modal 4</button>
+    <div class="modal modal4">
+      <div class="modal-content">
+        <span class="close-button close-button4">&times;</span>
+        <h2>Modal 4</h2>
+        <p>This is the content of Modal 4.</p>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- JavaScript -->
+    <script>
+      // Function to toggle modal
+      function toggleModal(modalId) {
+        var modal = document.querySelector(modalId);
+        modal.classList.toggle("show-modal");
+        document.body.classList.toggle("overflow-hidden");
+      }
+
+      // Function to handle click events
+      function handleModalEvents(
+        modalId,
+        triggerSelector,
+        closeButtonSelector
+      ) {
+        var trigger = document.querySelector(triggerSelector);
+        var closeButton = document.querySelector(closeButtonSelector);
+
+        function windowOnClick(event) {
+          var modal = document.querySelector(modalId);
+          if (event.target === modal) {
+            toggleModal(modalId);
+          }
+        }
+
+        trigger.addEventListener("click", function () {
+          toggleModal(modalId);
+        });
+
+        closeButton.addEventListener("click", function () {
+          toggleModal(modalId);
+        });
+
+        window.addEventListener("click", windowOnClick);
+      }
+
+      // Call the function for each modal
+      handleModalEvents(".modal2", ".trigger2", ".close-button2");
+      handleModalEvents(".modal3", ".trigger3", ".close-button3");
+      handleModalEvents(".modal4", ".trigger4", ".close-button4");
+    </script>
+  </body>
+</html>
